@@ -23,7 +23,7 @@ COPY --chown=appuser:appuser package.json package-lock.json ./
 # and automatically restart the app.
 ###########################################################
 FROM base AS dev
-ENV NODE_ENV development
+ENV NODE_ENV=development
 RUN npm install
 CMD ["npm", "run", "dev-container"]
 
@@ -35,10 +35,11 @@ CMD ["npm", "run", "dev-container"]
 # installs only the production dependencies.
 ###########################################################
 FROM base AS final
-ENV NODE_ENV production
+ENV NODE_ENV=production
 RUN npm ci --production --ignore-scripts && npm cache clean --force
 COPY ./src ./src
 
 EXPOSE 3000
 
-CMD node src/index.js
+#CMD node src/index.js
+CMD ["node", "src/index.js"]
